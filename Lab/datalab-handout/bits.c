@@ -142,8 +142,10 @@ extern int printf(const char *, ...);
  *   Rating: 2
  */
 long implication(long x, long y) {
-    return 2L;
+
+    return ((!x) | y);
 }
+
 /*
  * leastBitPos - return a mask that marks the position of the
  *               least significant 1 bit. If x == 0, return 0
@@ -153,8 +155,9 @@ long implication(long x, long y) {
  *   Rating: 2
  */
 long leastBitPos(long x) {
-    return 2;
+    return x & ((~x) + 1);
 }
+
 /*
  * distinctNegation - returns 1 if x != -x.
  *     and 0 otherwise
@@ -163,8 +166,9 @@ long leastBitPos(long x) {
  *   Rating: 2
  */
 long distinctNegation(long x) {
-    return 2;
+    return !!(x ^ ((~x) + 1));
 }
+
 /*
  * fitsBits - return 1 if x can be represented as an
  *  n-bit, two's complement integer.
@@ -175,8 +179,34 @@ long distinctNegation(long x) {
  *   Rating: 2
  */
 long fitsBits(long x, long n) {
+    long shift = 64L + (~n + 1);
+    return !(x ^ ((x << shift) >> shift));
+}
+
+/*
+ * rotateLeft - Rotate x to the left by n
+ *   Can assume that 0 <= n <= 63
+ *   Examples:
+ *      rotateLeft(0x8765432187654321L,4L) = 0x7654321876543218L
+ *   Legal ops: ~ & ^ | + << >> !
+ *   Max ops: 25
+ *   Rating: 3
+ */
+long rotateLeft(long x, long n) {
+    return 2;
+}
+
+/*
+ * bitParity - returns 1 if x contains an odd number of 0's
+ *   Examples: bitParity(5L) = 0L, bitParity(7L) = 1L
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 22
+ *   Rating: 4
+ */
+long bitParity(long x) {
     return 2L;
 }
+
 // 3
 /*
  * trueFiveEighths - multiplies by 5/8 rounding toward 0,
@@ -214,18 +244,7 @@ long addOK(long x, long y) {
 long isPower2(long x) {
     return 2L;
 }
-/*
- * rotateLeft - Rotate x to the left by n
- *   Can assume that 0 <= n <= 63
- *   Examples:
- *      rotateLeft(0x8765432187654321L,4L) = 0x7654321876543218L
- *   Legal ops: ~ & ^ | + << >> !
- *   Max ops: 25
- *   Rating: 3
- */
-long rotateLeft(long x, long n) {
-    return 2;
-}
+
 // 4
 /*
  * isPalindrome - Return 1 if bit pattern in x is equal to its mirror image
@@ -237,16 +256,7 @@ long rotateLeft(long x, long n) {
 long isPalindrome(long x) {
     return 2L;
 }
-/*
- * bitParity - returns 1 if x contains an odd number of 0's
- *   Examples: bitParity(5L) = 0L, bitParity(7L) = 1L
- *   Legal ops: ! ~ & ^ | + << >>
- *   Max ops: 22
- *   Rating: 4
- */
-long bitParity(long x) {
-    return 2L;
-}
+
 /*
  * absVal - absolute value of x
  *   Example: absVal(-1) = 1.
